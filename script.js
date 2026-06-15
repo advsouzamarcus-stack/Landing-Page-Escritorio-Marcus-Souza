@@ -20,19 +20,36 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
+function getField(id) {
+  return document.getElementById(id);
+}
+
+function setLeadTimestamp() {
+  const dataEnvio = document.getElementById('dataEnvio');
+  if (dataEnvio) {
+    dataEnvio.value = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+  }
+}
+
 function validateLeadForm(form) {
   let valid = true;
-  const nome = form.nome.value.trim();
-  const whatsapp = form.whatsapp.value.replace(/\D/g, '');
-  const email = form.email.value.trim();
-  const cidade = form.cidade.value.trim();
-  const interesse = form.interesse.value;
-  const consentimento = form.consentimento.checked;
+  const nome = getField('nome')?.value.trim() || '';
+  const sobrenome = getField('sobrenome')?.value.trim() || '';
+  const whatsapp = (getField('whatsapp')?.value || '').replace(/\D/g, '');
+  const email = getField('email')?.value.trim() || '';
+  const cidade = getField('cidade')?.value.trim() || '';
+  const interesse = getField('interesse')?.value || '';
+  const consentimento = getField('consentimento')?.checked || false;
 
-  ['nome', 'whatsapp', 'email', 'cidade', 'interesse', 'consentimento'].forEach(name => setError(name));
+  ['nome', 'sobrenome', 'whatsapp', 'email', 'cidade', 'interesse', 'consentimento'].forEach(name => setError(name));
 
-  if (nome.length < 3 || !nome.includes(' ')) {
-    setError('nome', 'Informe nome e sobrenome.');
+  if (nome.length < 2) {
+    setError('nome', 'Informe seu nome.');
+    valid = false;
+  }
+
+  if (sobrenome.length < 2) {
+    setError('sobrenome', 'Informe seu sobrenome.');
     valid = false;
   }
 
@@ -52,7 +69,7 @@ function validateLeadForm(form) {
   }
 
   if (!interesse) {
-    setError('interesse', 'Selecione o principal interesse.');
+    setError('interesse', 'Selecione o conteúdo desejado.');
     valid = false;
   }
 
@@ -61,18 +78,20 @@ function validateLeadForm(form) {
     valid = false;
   }
 
+  if (valid) setLeadTimestamp();
   return valid;
 }
 
-function leadMessage(form) {
+function leadMessage() {
   return [
     'Olá, Dr. Marcus Souza. Preenchi a Landing Page e quero receber conteúdos jurídicos.',
     '',
-    `Nome: ${form.nome.value.trim()}`,
-    `WhatsApp: ${form.whatsapp.value.trim()}`,
-    `E-mail: ${form.email.value.trim()}`,
-    `Cidade: ${form.cidade.value.trim()}`,
-    `Interesse: ${form.interesse.value}`
+    `Nome: ${getField('nome')?.value.trim() || ''} ${getField('sobrenome')?.value.trim() || ''}`,
+    `WhatsApp: ${getField('whatsapp')?.value.trim() || ''}`,
+    `E-mail: ${getField('email')?.value.trim() || ''}`,
+    `Cidade: ${getField('cidade')?.value.trim() || ''}`,
+    `Interesse: ${getField('interesse')?.value || ''}`,
+    `Data: ${new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}`
   ].join('\n');
 }
 
@@ -131,7 +150,10 @@ function initLeadForm() {
       if (!validateLeadForm(form)) {
         event.preventDefault();
         const firstError = form.querySelector('.error:not(:empty)');
-        if (firstError) firstError.previousElementSibling?.focus?.();
+        if (firstError) {
+          const target = firstError.parentElement?.querySelector('input, select') || firstError.previousElementSibling;
+          target?.focus?.();
+        }
       }
     });
   }
@@ -139,7 +161,7 @@ function initLeadForm() {
   if (sendLeadWhatsapp && form) {
     sendLeadWhatsapp.addEventListener('click', () => {
       if (!validateLeadForm(form)) return;
-      window.open(encodeWhatsAppMessage(leadMessage(form)), '_blank', 'noopener,noreferrer');
+      window.open(encodeWhatsAppMessage(leadMessage()), '_blank', 'noopener,noreferrer');
     });
   }
 }
