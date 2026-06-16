@@ -1,24 +1,20 @@
-# Site Marcus Souza Advocacia — versão otimizada para leads
+# Marcus Souza Advocacia — Redesign Landing Page
 
-Arquivos:
-- index.html
-- styles.css
-- script.js
-- obrigado.html
+Arquivos principais:
+- `index.html` — landing page principal.
+- `styles.css` — identidade visual nas cores da logomarca: azul-marinho, dourado, marfim e branco.
+- `script.js` — menu mobile, animações de entrada e feedback do formulário.
+- `obrigado.html` — página de confirmação após envio do formulário.
+- `assets/` — fotos e logomarca fornecidas.
 
-## Publicar no Netlify
-1. Substitua os arquivos atuais do site por estes arquivos.
-2. No painel Netlify, ative Forms para o projeto.
-3. O formulário usa `data-netlify="true"` e nome `lead-juridico`.
-4. Configure notificação de submissões para `adv.souzamarcus@gmail.com` em Site configuration > Forms > Form notifications.
-5. Confirme se o domínio publicado está correto.
+## Publicação no Netlify
 
-## Pontos implementados
-- Copy com dor direta: INSS, rescisão e cobrança indevida.
-- WhatsApp com mensagens pré-preenchidas por área.
-- Formulário de lead qualificado.
-- Página de obrigado.
-- Seção de método de atendimento.
-- Checklist documental por área.
-- FAQ para quebrar objeções.
-- Aviso ético sem promessa de resultado.
+1. Acesse o projeto `sitemarcussouzaadvocacia` no Netlify.
+2. Faça deploy manual arrastando esta pasta ou substitua os arquivos no repositório conectado.
+3. Confirme que `index.html` está na raiz do deploy.
+4. Em **Forms**, verifique o formulário `lead-juridico`.
+5. Configure notificação de e-mail para `adv.souzamarcus@gmail.com`.
+
+## Observações éticas
+
+A página evita promessa de resultado e apresenta o atendimento como análise técnica dependente de documentos, fatos, provas e prazos.
