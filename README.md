@@ -1,75 +1,54 @@
-# Landing Page — Marcus Souza Advogado
+# Landing Page - Marcus Souza Advogado
 
-Landing page estática feita em HTML + CSS + JavaScript para captação de leads jurídicos.
+Landing Page objetiva para captação de contatos e atendimento inicial em Direito Previdenciário, Direito do Trabalho e Direito do Consumidor.
 
 ## Arquivos principais
 
-- `index.html`: estrutura da página, áreas jurídicas, histórias curtas e formulário.
-- `style.css`: layout responsivo, identidade visual, cards, gráficos e Visual Law.
-- `script.js`: menu mobile, abas, validação do formulário, máscara de WhatsApp e botão de WhatsApp.
-- `obrigado.html`: página de confirmação após envio.
-- `assets/`: logomarca, fotos e ilustrações gratuitas em SVG.
+- `index.html` — página principal.
+- `style.css` — layout, responsividade e identidade visual.
+- `script.js` — menu mobile, validação do formulário, máscara de WhatsApp e botão de envio pelo WhatsApp.
+- `obrigado.html` — página de confirmação após envio, quando o redirecionamento estiver ativo.
+- `assets/` — logo, favicon e fotos institucionais.
 
-## Identificação profissional
+## Alterações desta versão
 
-Incluído no site:
+- Removida a frase solicitada do cartão principal da página.
+- Inserida a OAB/RJ 250.430 em pontos estratégicos.
+- Site encurtado e organizado em seções objetivas: início, áreas, casos comuns, Visual Law, formulário e CTA final.
+- Incluídas imagens ilustrativas de pessoas reais via Pexels para os casos comuns.
+- Formulário configurado para enviar os dados ao e-mail `adv.souzamarcus@gmail.com` via FormSubmit.
+- Mantido botão de WhatsApp clicável para `(21) 96534-8183`.
 
-**OAB/RJ 250.430**
+## Observação sobre o formulário
 
-## WhatsApp configurado
-
-Número usado no código:
-
-`(21) 96534-8183` → `https://wa.me/5521965348183`
-
-## Envio do formulário para e-mail
-
-O formulário “Quero receber conteúdos jurídicos” foi configurado para enviar os dados para:
-
-`adv.souzamarcus@gmail.com`
-
-Implementação usada:
+O formulário usa o serviço externo FormSubmit:
 
 ```html
-<form action="https://formsubmit.co/adv.souzamarcus@gmail.com" method="POST">
+<form method="POST" action="https://formsubmit.co/adv.souzamarcus@gmail.com">
 ```
 
-### Atenção importante
-
-Na primeira submissão, o FormSubmit costuma exigir confirmação do e-mail destinatário. Faça um teste preenchendo o formulário publicado e confirme o recebimento no e-mail `adv.souzamarcus@gmail.com`.
-
-O redirecionamento após envio está configurado para:
-
-`https://marcussouzaadvocacia.netlify.app/obrigado.html`
-
-Se publicar em outro domínio, altere o campo `_next` dentro do `index.html`.
-
-## Campos obrigatórios do formulário
-
-- Nome
-- Sobrenome
-- WhatsApp com DDD
-- E-mail
-- Cidade
-- Conteúdo de interesse
-- Consentimento para contato
+No primeiro envio, o FormSubmit pode solicitar confirmação no e-mail destinatário. Confirme no e-mail `adv.souzamarcus@gmail.com` para liberar os próximos recebimentos.
 
 ## Imagens gratuitas
 
-Foram incluídas ilustrações vetoriais em SVG criadas para este projeto:
+As imagens dos cards de casos comuns são carregadas remotamente do Pexels. Elas são ilustrativas e não representam clientes reais do escritório.
 
-- `assets/area-previdenciario.svg`
-- `assets/area-trabalhista.svg`
-- `assets/area-consumidor.svg`
+Páginas de referência das imagens:
 
-Elas exemplificam as áreas de Direito Previdenciário, Direito do Trabalho e Direito do Consumidor sem depender de banco externo de imagens.
+- Previdenciário: Pexels ID 7545305.
+- Trabalhista: Pexels ID 5668795.
+- Consumidor: Pexels ID 8111860.
 
-## Conteúdo jurídico incluído
+## Publicação no Netlify
 
-A página inclui histórias curtas de situações recorrentes:
+1. Envie a pasta `marcus-souza-landing` para um repositório no GitHub.
+2. No Netlify, crie um novo site conectado ao repositório.
+3. Configure o diretório de publicação como a raiz da pasta.
+4. Faça um teste real do formulário após publicar.
 
-- Benefício previdenciário negado mesmo com laudos médicos.
-- Rescisão trabalhista sem pagamento correto.
-- Cobrança, fraude ou falha de serviço em relação de consumo.
+## Publicação no GitHub Pages
 
-Os textos foram redigidos sem promessa de resultado e com ressalva de que cada caso depende da análise individual dos documentos, fatos e prazos.
+1. Suba os arquivos para o repositório.
+2. Ative GitHub Pages em `Settings > Pages`.
+3. Selecione a branch principal e a pasta raiz.
+4. Teste o formulário e o WhatsApp após a publicação.

@@ -16,22 +16,27 @@ function setError(fieldName, message = '') {
   if (error) error.textContent = message;
 }
 
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-}
-
 function getField(id) {
   return document.getElementById(id);
 }
 
-function setLeadTimestamp() {
-  const dataEnvio = document.getElementById('dataEnvio');
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+function setHiddenMetadata() {
+  const dataEnvio = getField('dataEnvio');
   if (dataEnvio) {
     dataEnvio.value = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
   }
+
+  const nextUrl = getField('nextUrl');
+  if (nextUrl && window.location.origin && window.location.origin.startsWith('http')) {
+    nextUrl.value = `${window.location.origin}/obrigado.html`;
+  }
 }
 
-function validateLeadForm(form) {
+function validateLeadForm() {
   let valid = true;
   const nome = getField('nome')?.value.trim() || '';
   const sobrenome = getField('sobrenome')?.value.trim() || '';
@@ -78,7 +83,7 @@ function validateLeadForm(form) {
     valid = false;
   }
 
-  if (valid) setLeadTimestamp();
+  if (valid) setHiddenMetadata();
   return valid;
 }
 
@@ -113,31 +118,10 @@ function initNavigation() {
   });
 }
 
-function initAreaTabs() {
-  const tabs = document.querySelectorAll('.tab');
-  const panels = document.querySelectorAll('.area-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      tabs.forEach(item => {
-        item.classList.remove('active');
-        item.setAttribute('aria-selected', 'false');
-      });
-      panels.forEach(panel => {
-        const active = panel.id === target;
-        panel.classList.toggle('active', active);
-        panel.hidden = !active;
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-    });
-  });
-}
-
 function initLeadForm() {
-  const form = document.getElementById('leadForm');
-  const whatsappInput = document.getElementById('whatsapp');
-  const sendLeadWhatsapp = document.getElementById('sendLeadWhatsapp');
+  const form = getField('leadForm');
+  const whatsappInput = getField('whatsapp');
+  const sendLeadWhatsapp = getField('sendLeadWhatsapp');
 
   if (whatsappInput) {
     whatsappInput.addEventListener('input', event => {
@@ -147,20 +131,18 @@ function initLeadForm() {
 
   if (form) {
     form.addEventListener('submit', event => {
-      if (!validateLeadForm(form)) {
+      if (!validateLeadForm()) {
         event.preventDefault();
         const firstError = form.querySelector('.error:not(:empty)');
-        if (firstError) {
-          const target = firstError.parentElement?.querySelector('input, select') || firstError.previousElementSibling;
-          target?.focus?.();
-        }
+        const target = firstError?.previousElementSibling;
+        target?.focus?.();
       }
     });
   }
 
-  if (sendLeadWhatsapp && form) {
+  if (sendLeadWhatsapp) {
     sendLeadWhatsapp.addEventListener('click', () => {
-      if (!validateLeadForm(form)) return;
+      if (!validateLeadForm()) return;
       window.open(encodeWhatsAppMessage(leadMessage()), '_blank', 'noopener,noreferrer');
     });
   }
@@ -180,38 +162,9 @@ function initRevealAnimations() {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.16 });
+  }, { threshold: 0.15 });
 
   items.forEach(item => observer.observe(item));
-}
-
-function initCounters() {
-  const counters = document.querySelectorAll('[data-counter]');
-  if (!counters.length) return;
-
-  const runCounter = element => {
-    const target = Number(element.dataset.counter);
-    const duration = 900;
-    const start = performance.now();
-
-    function frame(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      element.textContent = Math.round(progress * target);
-      if (progress < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  };
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        runCounter(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  });
-
-  counters.forEach(counter => observer.observe(counter));
 }
 
 function initSmartWhatsappLinks() {
@@ -225,8 +178,6 @@ function initSmartWhatsappLinks() {
 }
 
 initNavigation();
-initAreaTabs();
 initLeadForm();
 initRevealAnimations();
-initCounters();
 initSmartWhatsappLinks();
